@@ -99,13 +99,13 @@ def get_lecture_summary(lecture: int) -> str:
 
 
 def search_materials(query: str) -> str:
-    """第1〜3回の本講義資料を検索し、関連ページの本文・タイトル・ページ番号を返す。
+    """第1〜3回の本講義資料を検索し、関連ページと同じ資料の前後1ページの本文・タイトル・ページ番号を返す。
 
     queryに調べたい内容を指定する。
     """
     from google.genai.errors import APIError
     import sqlite3
-    from app.retrieval import search
+    from app.retrieval import search_with_neighbors as search
 
     try:
         return json.dumps({"results": search(query)}, ensure_ascii=False)
