@@ -1,3 +1,4 @@
+
 """第6回: 用語集と各回の要点を MCP サーバーとして公開する。
 
 使い方:
@@ -28,6 +29,9 @@ server = MCPServer(
 server.tool()(tools.search_glossary)
 
 # TODO(宿題・基礎): get_lecture_summary も公開しよう
+
+# 第6回 宿題・実装
+server.tool()(tools.make_quiz)
 
 
 def main() -> None:

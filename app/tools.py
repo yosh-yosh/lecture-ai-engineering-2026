@@ -1,3 +1,4 @@
+
 """第3回: エージェントに持たせるツール。
 
 ここに書いた関数の docstring と型ヒントが、そのままモデルへの「ツールの説明文」になる。
@@ -5,6 +6,7 @@
 """
 
 import json
+import random
 from functools import cache
 from pathlib import Path
 
@@ -65,6 +67,35 @@ def search_glossary(query: str) -> str:
             }
             for e in hits
         ],
+        ensure_ascii=False,
+    )
+
+
+# 第6回 宿題・実装
+def make_quiz(lecture: int) -> str:
+    """指定した回の用語集から確認問題を1問作り、問題と答えを返す。
+
+    「第2回の確認問題を出して」のように、講義の復習や確認問題を求められたときに使う。
+    lecture には出題する回を1始まりの整数で指定する。
+    """
+    glossary = load_glossary()
+    available = sorted({entry["lecture"] for entry in glossary})
+    terms = [entry for entry in glossary if entry["lecture"] == lecture]
+
+    if not terms:
+        valid = "、".join(f"第{n}回" for n in available)
+        return (
+            f"第{lecture}回は出題対象外です。"
+            f"出題可能な講義は{valid}です。"
+            "有効な講義回を指定してください。"
+        )
+
+    entry = random.choice(terms)
+    return json.dumps(
+        {
+            "question": f"「{entry['term']}」の意味は？",
+            "answer": entry["definition"],
+        },
         ensure_ascii=False,
     )
 
